@@ -2,8 +2,8 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 
 function testing() {
-    console.log('testing from pull.js')
+    const context = github.context;
+    console.log(context);
 }
-
 
 module.exports = { testing };
