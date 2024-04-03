@@ -37,9 +37,9 @@ async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNum
         owner: ownerName,
         repo: repoName,
         pull_number: pullRequestNumber,
-        mediaType: {
-          format: 'diff'
-        }
+        // mediaType: {
+        //   format: 'diff'
+        // }
     });
 
     console.log(pullRequest);
