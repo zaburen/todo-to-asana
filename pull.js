@@ -2,10 +2,9 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 
 async function getPullRequestInfo() {
-    logContext();
     const requestParams = getRequestParams();
     const pullRequest = getPullRequestInfoFromBackend(requestParams.ownerName, requestParams.repoName, requestParams.pullRequestNumber);
-
+    
 }
 
 function getRequestParams() {
@@ -48,7 +47,7 @@ async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNum
         }
     });
 
-    const { data: raw } = await octokit.rest.pulls.get({
+    const raw = await octokit.rest.pulls.get({
         owner: ownerName,
         repo: repoName,
         pull_number: pullRequestNumber,
@@ -57,7 +56,7 @@ async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNum
         }
     });
 
-    const { data: text } = await octokit.rest.pulls.get({
+    const text= await octokit.rest.pulls.get({
         owner: ownerName,
         repo: repoName,
         pull_number: pullRequestNumber,
@@ -66,7 +65,7 @@ async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNum
         }
     });
 
-    const { data: html } = await octokit.rest.pulls.get({
+    const html = await octokit.rest.pulls.get({
         owner: ownerName,
         repo: repoName,
         pull_number: pullRequestNumber,
@@ -75,7 +74,7 @@ async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNum
         }
     });
 
-    const { data: full } = await octokit.rest.pulls.get({
+    const full = await octokit.rest.pulls.get({
         owner: ownerName,
         repo: repoName,
         pull_number: pullRequestNumber,
