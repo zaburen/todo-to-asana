@@ -37,12 +37,22 @@ async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNum
         owner: ownerName,
         repo: repoName,
         pull_number: pullRequestNumber,
-        // mediaType: {
-        //   format: 'diff'
-        // }
     });
 
+    const diff = await octokit.rest.pulls.get({
+        owner: ownerName,
+        repo: repoName,
+        pull_number: pullRequestNumber,
+        mediaType: {
+          format: 'diff'
+        }
+    });
+
+    diff.data
+
     console.log(pullRequest);
+    console.log(diff)
+    console.log(`typeof diff ${typeof diff}`)
 }
 
 function logContext() {
