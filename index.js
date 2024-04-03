@@ -3,7 +3,7 @@ const github = require('@actions/github');
 const pull = require("./pull");
 
 try {
-    pull.testing();
+    pull.getPullRequestInfo();
 } catch (error) {
     core.setFailed(error.message);
 }
