@@ -1,0 +1,12 @@
+name: 'Get Todo Comments'
+description: 'Grab all the Todo comments added in a Pull Request'
+inputs:
+  github-token:  # should be secrets.GITHUB_TOKEN
+    description: 'should be secrets.GITHUB_TOKEN'
+    required: true
+outputs:
+  todo-comments: # todo comment info
+    description: 'info on any todo comments found'
+runs:
+  using: 'node20'
+  main: 'index.js'
