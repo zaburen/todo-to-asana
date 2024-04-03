@@ -39,7 +39,7 @@ async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNum
         pull_number: pullRequestNumber,
     });
 
-    const diff = await octokit.rest.pulls.get({
+    const { data: diff } = await octokit.rest.pulls.get({
         owner: ownerName,
         repo: repoName,
         pull_number: pullRequestNumber,
@@ -48,11 +48,53 @@ async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNum
         }
     });
 
-    diff.data
+    const { data: raw } = await octokit.rest.pulls.get({
+        owner: ownerName,
+        repo: repoName,
+        pull_number: pullRequestNumber,
+        mediaType: {
+          format: 'raw'
+        }
+    });
+
+    const { data: text } = await octokit.rest.pulls.get({
+        owner: ownerName,
+        repo: repoName,
+        pull_number: pullRequestNumber,
+        mediaType: {
+          format: 'text'
+        }
+    });
+
+    const { data: html } = await octokit.rest.pulls.get({
+        owner: ownerName,
+        repo: repoName,
+        pull_number: pullRequestNumber,
+        mediaType: {
+          format: 'html'
+        }
+    });
+
+    const { data: full } = await octokit.rest.pulls.get({
+        owner: ownerName,
+        repo: repoName,
+        pull_number: pullRequestNumber,
+        mediaType: {
+          format: 'full'
+        }
+    });
 
     console.log(pullRequest);
-    console.log(diff)
-    console.log(`typeof diff ${typeof diff}`)
+    console.log('--------------------------------');
+    console.log(diff);
+    console.log('--------------------------------');
+    console.log(raw);
+    console.log('--------------------------------');
+    console.log(text);
+    console.log('--------------------------------');
+    console.log(html);
+    console.log('--------------------------------');
+    console.log(full);
 }
 
 function logContext() {
