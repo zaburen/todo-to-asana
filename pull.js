@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const { getFileAndCodeChunkArrayFromDiff } = require('./util-diff');
 
 async function getPullRequestInfo() {
     const requestParams = getRequestParams();
@@ -47,53 +48,12 @@ async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNum
         }
     });
 
-    const raw = await octokit.rest.pulls.get({
-        owner: ownerName,
-        repo: repoName,
-        pull_number: pullRequestNumber,
-        mediaType: {
-          format: 'raw'
-        }
-    });
-
-    const text= await octokit.rest.pulls.get({
-        owner: ownerName,
-        repo: repoName,
-        pull_number: pullRequestNumber,
-        mediaType: {
-          format: 'text'
-        }
-    });
-
-    const html = await octokit.rest.pulls.get({
-        owner: ownerName,
-        repo: repoName,
-        pull_number: pullRequestNumber,
-        mediaType: {
-          format: 'html'
-        }
-    });
-
-    const full = await octokit.rest.pulls.get({
-        owner: ownerName,
-        repo: repoName,
-        pull_number: pullRequestNumber,
-        mediaType: {
-          format: 'full'
-        }
-    });
 
     console.log(pullRequest);
     console.log('--------------------------------');
     console.log(diff);
     console.log('--------------------------------');
-    console.log(raw);
-    console.log('--------------------------------');
-    console.log(text);
-    console.log('--------------------------------');
-    console.log(html);
-    console.log('--------------------------------');
-    console.log(full);
+    console.log(getFileAndCodeChunkArrayFromDiff(diff));
 }
 
 function logContext() {
