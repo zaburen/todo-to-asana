@@ -84,3 +84,5 @@ function getCodeChunksFromDiffSection(diffSection) {
 
     return codeChunks;
 }
+
+module.exports = { getFileAndCodeChunkArrayFromDiff };
