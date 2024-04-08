@@ -4,7 +4,7 @@
  * And an array of code chunks that have been changed.
  * 
  * @param {String} diffOutput Text from Github Pull Request Diff
- * @returns Object { fileName: String, codeChunks: [String, String, ...]}
+ * @returns Object { fileName: String, codeChunks: [ { codeChunk: 'block of code', changedLines: ['addedLine1', addedLine2']} ]}
  */
 function getFileAndCodeChunkArrayFromDiff(diffOutput) {
     let diffSections = getDiffSections(diffOutput);
@@ -60,7 +60,8 @@ function getFileName(text) {
  * Take a diff block (one file) of text and break it into various code blocks
  * 
  * @param {String} diffSection Text from a diff section
- * @returns array of blocks of code in form of string
+ * @returns Array of Objects representing code with additional lines
+ *  { codeChunk: 'block of code', changedLines: ['addedLine1', addedLine2']}
  */
 function getCodeChunksFromDiffSection(diffSection) {
     let newSectionRegexPattern = "@{2}.*@{2}" // indicates start of code for a changed section
@@ -82,7 +83,33 @@ function getCodeChunksFromDiffSection(diffSection) {
         }
     });
 
-    return codeChunks;
+    let mapedChunks = [];
+
+    codeChunks.forEach(chunk => {
+        let changedLiens = getAddedLines(chunk);
+        if (changedLiens.length == 0) {
+            // no added lines
+            return;
+        }
+        mapedChunks.push({ codeChunk: chunk, changedLines: changedLiens });
+    })
+
+    return mapedChunks;
 }
+
+/**
+ * Get array of all added code lines.
+ * 
+ * @param {diffChunk} diffChunk Text Chunck from diff
+ * @returns Array of String, each a line of added code
+ */
+function getAddedLines(diffChunk) {
+    let allLines = diffChunk.split('\n');
+    let addedLines = allLines.filter(line => {
+        return line.trim().startsWith('+');
+    });
+    return addedLines;
+}
+
 
 module.exports = { getFileAndCodeChunkArrayFromDiff };

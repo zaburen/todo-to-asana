@@ -8,6 +8,11 @@ async function getPullRequestInfo() {
     
 }
 
+/**
+ * Get parameters need to make a request for Pull Request info.
+ * 
+ * @returns Object { ownerName: String, repoName: String, pullRequestNumber: String }
+ */
 function getRequestParams() {
     const context = github.context;
 
@@ -26,7 +31,7 @@ function getRequestParams() {
     const pullRequestNumber = pullRequest.number;
 
     console.log(`ownerName: ${ownerName}, repoName: ${repoName}, pullRequestNumber: ${pullRequestNumber}`);
-    return { ownerName: ownerName, repoName: repoName, pullRequestNumber: pullRequestNumber};
+    return { ownerName: ownerName, repoName: repoName, pullRequestNumber: pullRequestNumber };
 }
 
 async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNumber) {
