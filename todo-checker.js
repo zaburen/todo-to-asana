@@ -45,7 +45,7 @@ function getTodoRegex(language) {
     let regexDefault = new RegExp(prefixDefault + commonSuffix, flags);
 
     let finalLanguage = language === null ? 'none given' : language
-    console.log(`language defined as: ${finalLanguage}`);
+    log(`language defined as: ${finalLanguage}`);
 
     switch (finalLanguage.toLowerCase()) {
         case 'java':

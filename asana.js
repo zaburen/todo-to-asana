@@ -16,13 +16,11 @@ async function createTask(name, notes) {
         throw new Error('Asana PAT has not been set! Please set the PAT in your YAML file.');
     }
     token.accessToken = accessToken;
-    console.log(`accessToken: ${token.accessToken}, length ${token.accessToken.length}`);
     
     let asanaProjects = core.getInput('asana-projects');
     if (asanaProjects === null) {
         throw new Error('Asana project ids have not been set! Please set the project ids in your YAML file.');
     }
-    console.log(`asanaProjects: ${asanaProjects}, length ${asanaProjects.length}`);
     let asanaProjectsArray = asanaProjects.split(',');
 
     let tasksApiInstance = new Asana.TasksApi();
@@ -40,7 +38,7 @@ async function createTask(name, notes) {
     let resultUrl = '';
     // POST - Create a task
     await tasksApiInstance.createTask(body, opts).then((result) => {
-        console.log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2));
+        log('API called successfully. Returned data: ' + JSON.stringify(result.data, null, 2))
         resultUrl = result.data.permalink_url;
     }, (error) => {
         console.error(error.response.body);

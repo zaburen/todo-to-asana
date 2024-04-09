@@ -2,6 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const { getFileAndCodeChunkArrayFromDiff } = require('./util-diff');
 const { doChangedLinesHaveTodoComments } = require('./todo-checker');
+const { log } = require('./log');
 
 
 /**
@@ -62,6 +63,8 @@ async function getPullRequestInfo(ownerName, repoName, pullRequestNumber) {
         pull_number: pullRequestNumber,
     });
 
+    log(`pullRequest data: \n${pullRequest}`);
+
     let language = pullRequest.head.repo.language;
     let pullRequestUrl = pullRequest.html_url;
 
@@ -74,16 +77,9 @@ async function getPullRequestInfo(ownerName, repoName, pullRequestNumber) {
         }
     });
 
-    console.log('--------------------------------');
-    console.log(pullRequest);
-    console.log('--------------------------------');
-    console.log(`PR URL: ${pullRequestUrl}, language: ${language}`);
-    console.log('--------------------------------');
-    console.log(diff);
-    console.log('--------------------------------');
+    log(`diff data: \n${diff}`)
 
     let fileAndChunks = getFileAndCodeChunkArrayFromDiff(diff)
-    // console.log(fileAndChunks);
 
     // make return array with custom objects
     let returnInfo = [];
@@ -92,7 +88,7 @@ async function getPullRequestInfo(ownerName, repoName, pullRequestNumber) {
             .filter(chunk => doChangedLinesHaveTodoComments(chunk.changedLines, language))
             .map(chunk => chunk.codeChunk); // only need the code chunk not lines
         if (codeBlocksWithTodo.length <= 0) {
-            console.log(`${fileAndChunk.fileName} had no new TODO comments`)
+            log(`${fileAndChunk.fileName} had no new TODO comments`);
             return;
         }
         let obj = {
@@ -103,9 +99,6 @@ async function getPullRequestInfo(ownerName, repoName, pullRequestNumber) {
         returnInfo.push(obj);
     })
 
-    console.log('--------------------------------');
-    console.log(returnInfo);
-    console.log('--------------------------------');
     return returnInfo;
 }
 
