@@ -103,7 +103,9 @@ async function getPullRequestInfo(ownerName, repoName, pullRequestNumber) {
 }
 
 async function postComment(comment) {
-
+    const githubToken = core.getInput('github-token');
+    const octokit = github.getOctokit(githubToken)
+    
     let requestParams = getRequestParams();
 
     let response = await octokit.rest.issues.createComment({
