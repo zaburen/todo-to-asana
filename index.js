@@ -20,16 +20,20 @@ async function run() {
 
 async function makeAsanaTasks(pullRequestInfoArray) {
     let newTaskUrls = [];
-    await pullRequestInfoArray.forEach(pullRequestInfo => {
+
+    for await (const pullRequestInfo of pullRequestInfoArray) {
         let fileName = pullRequestInfo.fileName;
         let pullRequestUrl = pullRequestInfo.pullRequestUrl;
-        pullRequestInfo.codeBlocks.forEach((codeBlock, index) => {
-            let taskName = `${fileName}: ${index +1} (${new Date().toLocaleDateString()})`;
+        let index = 1;
+        for await (const codeBlock of pullRequestInfo.codeBlocks) {
+            let taskName = `${fileName}: ${index} (${new Date().toLocaleDateString()})`;
             let taskNote = `${pullRequestUrl}\n\n\`\`\`\n${codeBlock}\n\`\`\``;
-            let taskUrl = createTask(taskName, taskNote)
+            let taskUrl = await createTask(taskName, taskNote);
             newTaskUrls.push(taskUrl);
-        });
-    });
+            index = index++;
+        }
+    }
+
     return newTaskUrls;
 }
 
