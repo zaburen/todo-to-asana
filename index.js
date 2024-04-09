@@ -14,10 +14,7 @@ async function run() {
             pullRequestInfo.codeBlocks.forEach((codeBlock, index) => {
                 let taskName = `${fileName}: ${index} (${new Date().toLocaleDateString()})`;
                 let taskNote = `${pullRequestUrl}\n\n\`\`\`\n${codeBlock}\`\`\``;
-                createTask(
-                    taskName,
-                    taskNote,
-                )
+                createTask(taskName, taskNote)
             });
         });
     } catch (error) {

@@ -16,7 +16,7 @@ async function createTask(name, notes) {
         throw new Error('Asana PAT has not been set! Please set the PAT in your YAML file.');
     }
     token.accessToken = accessToken;
-    console.log(`accessToken: ${accessToken}, length ${accessToken.length}`);
+    console.log(`accessToken: ${token.accessToken}, length ${token.accessToken.length}`);
     
     let asanaProjects = core.getInput('asana-projects');
     if (asanaProjects === null) {
