@@ -92,3 +92,5 @@ function getTodoRegex(language) {
             return regexDefault;
     }
 }
+
+module.exports = { doChangedLinesHaveTodoComments };
