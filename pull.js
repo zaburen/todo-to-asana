@@ -91,7 +91,7 @@ async function getPullRequestInfo(ownerName, repoName, pullRequestNumber) {
         let codeBlocksWithTodo = fileAndChunk.codeChunks
             .filter(chunk => doChangedLinesHaveTodoComments(chunk.changedLines, language))
             .map(chunk => chunk.codeChunk); // only need the code chunk not lines
-        if (chunksWithTodo.length <= 0) {
+        if (codeBlocksWithTodo.length <= 0) {
             console.log(`${fileAndChunk.fileName} had no new TODO comments`)
             return;
         }
