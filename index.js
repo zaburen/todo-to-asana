@@ -10,10 +10,13 @@ async function run() {
 
         pullRequestInfoArray.forEach(pullRequestInfo => {
             let fileName = pullRequestInfo.fileName;
+            let pullRequestUrl = pullRequestInfo.pullRequestUrl;
             pullRequestInfo.codeBlocks.forEach((codeBlock, index) => {
+                let taskName = `${fileName}: ${index} (${new Date().toLocaleDateString()})`;
+                let taskNote = `${pullRequestUrl}\n\n\`\`\`\n${codeBlock}\`\`\``;
                 createTask(
-                    `${fileName}: ${index} (${new Date().toLocaleDateString()})`,
-                    codeBlock,
+                    taskName,
+                    taskNote,
                 )
             });
         });
