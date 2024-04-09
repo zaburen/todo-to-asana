@@ -23,13 +23,14 @@ async function createTask(name, notes) {
         throw new Error('Asana project ids have not been set! Please set the project ids in your YAML file.');
     }
     console.log(`asanaProjects: ${asanaProjects}, length ${asanaProjects.length}`);
+    let asanaProjectsArray = asanaProjects.split(',');
 
     let tasksApiInstance = new Asana.TasksApi();
     let body = {
         "data": {
             "name": name,
             "notes": notes,
-            "projects": asanaProjects, // needs to be string array
+            "projects": asanaProjectsArray, // needs to be string array
             "completed": false,
         },
     };
