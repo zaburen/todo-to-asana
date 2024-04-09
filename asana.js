@@ -16,12 +16,13 @@ async function createTask(name, notes) {
         throw new Error('Asana PAT has not been set! Please set the PAT in your YAML file.');
     }
     token.accessToken = accessToken;
+    console.log(`accessToken: ${accessToken}, length ${accessToken.length}`);
     
     let asanaProjects = core.getInput('asana-projects');
     if (asanaProjects === null) {
         throw new Error('Asana project ids have not been set! Please set the project ids in your YAML file.');
     }
-    console.log(`asanaProjects: ${asanaProjects}`)
+    console.log(`asanaProjects: ${asanaProjects}, length ${asanaProjects.length}`);
 
     let tasksApiInstance = new Asana.TasksApi();
     let body = {

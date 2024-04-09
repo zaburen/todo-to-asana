@@ -77,7 +77,7 @@ async function getPullRequestInfo(ownerName, repoName, pullRequestNumber) {
     console.log('--------------------------------');
     console.log(pullRequest);
     console.log('--------------------------------');
-    console.log(`PR URL: ${pullRequest}, language: ${language}`);
+    console.log(`PR URL: ${pullRequestUrl}, language: ${language}`);
     console.log('--------------------------------');
     console.log(diff);
     console.log('--------------------------------');
