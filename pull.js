@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { getFileAndCodeChunkArrayFromDiff } = require('./util-diff');
+const { doChangedLinesHaveTodoComments } = require('./todo-checker');
 
 async function getPullRequestInfo() {
     const requestParams = getRequestParams();
@@ -58,7 +59,16 @@ async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNum
     console.log('--------------------------------');
     console.log(diff);
     console.log('--------------------------------');
-    console.log(getFileAndCodeChunkArrayFromDiff(diff));
+
+    let fileAndChunks = getFileAndCodeChunkArrayFromDiff(diff)
+    // console.log(fileAndChunks);
+
+    fileAndChunks.forEach(fileAndChunk => {
+        console.log(fileAndChunk.fileName)
+        fileAndChunk.codeChunks.some(chunks => {
+            console.log(`have todo comments?: ${doChangedLinesHaveTodoComments(chunks.changedLines, 'Kotlin')}`)
+        })
+    })
 }
 
 function logContext() {
