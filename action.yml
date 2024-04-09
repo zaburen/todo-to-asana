@@ -8,11 +8,8 @@ inputs:
     description: 'Personal Access Token for Asana'
     required: true
   asana-projects:  # String Array of Asana Project GIDs to add the new task
-    description: 'String Array of Asana Project GIDs to add the new task'
+    description: 'String: Array of Asana Project IDs to add the new task. Add comman without space after each ID'
     required: true
-outputs:
-  todo-comments: # todo comment info
-    description: 'info on any todo comments found'
 runs:
   using: 'node20'
   main: 'index.js'
