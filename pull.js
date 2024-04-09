@@ -42,7 +42,7 @@ function getRequestParams() {
     const repoName = repository.name;
     const pullRequestNumber = pullRequest.number;
 
-    console.log(`ownerName: ${ownerName}, repoName: ${repoName}, pullRequestNumber: ${pullRequestNumber}`);
+    log(`ownerName: ${ownerName}, repoName: ${repoName}, pullRequestNumber: ${pullRequestNumber}`);
     return { ownerName: ownerName, repoName: repoName, pullRequestNumber: pullRequestNumber };
 }
 
@@ -77,9 +77,9 @@ async function getPullRequestInfo(ownerName, repoName, pullRequestNumber) {
         }
     });
 
-    log(`diff data: \n${diff}`)
+    log(`diff data: \n${diff}`);
 
-    let fileAndChunks = getFileAndCodeChunkArrayFromDiff(diff)
+    let fileAndChunks = getFileAndCodeChunkArrayFromDiff(diff);
 
     // make return array with custom objects
     let returnInfo = [];

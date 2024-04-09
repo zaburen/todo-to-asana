@@ -1,3 +1,4 @@
+const { log } = require('./log');
 
 /**
  * 

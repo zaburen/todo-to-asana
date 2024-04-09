@@ -1,6 +1,6 @@
-
 const Asana = require('asana');
 const core = require('@actions/core');
+const { log } = require('./log');
 
 /**
  * 
