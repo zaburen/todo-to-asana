@@ -102,4 +102,18 @@ async function getPullRequestInfo(ownerName, repoName, pullRequestNumber) {
     return returnInfo;
 }
 
-module.exports = { getFilesWithTodoComments };
+async function postComment(comment) {
+
+    let requestParams = getRequestParams();
+
+    let response = await octokit.rest.issues.createComment({
+        owner: requestParams.ownerName,
+        repo: requestParams.repoName,
+        issue_number: requestParams.pullRequestNumber,
+        body: comment,
+    });
+
+    return response;
+}
+
+module.exports = { getFilesWithTodoComments, postComment };

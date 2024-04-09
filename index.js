@@ -8,15 +8,20 @@ async function run() {
     try {
         let pullRequestInfoArray = await pull.getFilesWithTodoComments();
 
+        let newTaskUrls = [];
         pullRequestInfoArray.forEach(pullRequestInfo => {
             let fileName = pullRequestInfo.fileName;
             let pullRequestUrl = pullRequestInfo.pullRequestUrl;
             pullRequestInfo.codeBlocks.forEach((codeBlock, index) => {
                 let taskName = `${fileName}: ${index +1} (${new Date().toLocaleDateString()})`;
                 let taskNote = `${pullRequestUrl}\n\n\`\`\`\n${codeBlock}\n\`\`\``;
-                createTask(taskName, taskNote)
+                let taskUrl = createTask(taskName, taskNote)
+                newTaskUrls.push(taskUrl);
             });
         });
+        if(newTaskUrls.length > 0) {
+            pull.postComment(`New Tasks:\n${newTaskUrls.join('\n')}`);
+        }
     } catch (error) {
         core.setFailed(error.message);
     }
