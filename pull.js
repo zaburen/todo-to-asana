@@ -3,10 +3,20 @@ const github = require('@actions/github');
 const { getFileAndCodeChunkArrayFromDiff } = require('./util-diff');
 const { doChangedLinesHaveTodoComments } = require('./todo-checker');
 
-async function getPullRequestInfo() {
+
+/**
+ * Get Array for with custom Objects holding 
+ * file name, array of blocks of code with new todo comments, and url for pull request
+ * @returns Array [ { fileName: String, codeBlocks: [String, String, ...], pullRequestUrl: String} ]
+ */
+async function getFilesWithTodoComments() {
     const requestParams = getRequestParams();
-    const pullRequest = getPullRequestInfoFromBackend(requestParams.ownerName, requestParams.repoName, requestParams.pullRequestNumber);
-    
+    const pullRequestInfo = await getPullRequestInfo(
+        requestParams.ownerName, 
+        requestParams.repoName, 
+        requestParams.pullRequestNumber
+        );
+    return pullRequestInfo;
 }
 
 /**
@@ -35,7 +45,14 @@ function getRequestParams() {
     return { ownerName: ownerName, repoName: repoName, pullRequestNumber: pullRequestNumber };
 }
 
-async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNumber) {
+/**
+ * 
+ * @param {String} ownerName 
+ * @param {String} repoName 
+ * @param {String} pullRequestNumber 
+ * @returns Array [ { fileName: String, codeBlocks: [String, String, ...], pullRequestUrl: String} ]
+ */
+async function getPullRequestInfo(ownerName, repoName, pullRequestNumber) {
     const githubToken = core.getInput('github-token');
     const octokit = github.getOctokit(githubToken)
 
@@ -44,6 +61,9 @@ async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNum
         repo: repoName,
         pull_number: pullRequestNumber,
     });
+
+    let language = pullRequest.head.repo.language;
+    let pullRequestUrl = pullRequest.html_url;
 
     const { data: diff } = await octokit.rest.pulls.get({
         owner: ownerName,
@@ -54,8 +74,10 @@ async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNum
         }
     });
 
-
+    console.log('--------------------------------');
     console.log(pullRequest);
+    console.log('--------------------------------');
+    console.log(`PR URL: ${pullRequest}, language: ${language}`);
     console.log('--------------------------------');
     console.log(diff);
     console.log('--------------------------------');
@@ -63,18 +85,28 @@ async function getPullRequestInfoFromBackend(ownerName, repoName, pullRequestNum
     let fileAndChunks = getFileAndCodeChunkArrayFromDiff(diff)
     // console.log(fileAndChunks);
 
+    // make return array with custom objects
+    let returnInfo = [];
     fileAndChunks.forEach(fileAndChunk => {
-        console.log(fileAndChunk.fileName)
-        fileAndChunk.codeChunks.some(chunks => {
-            console.log(`have todo comments?: ${doChangedLinesHaveTodoComments(chunks.changedLines, 'Kotlin')}`)
-        })
+        let codeBlocksWithTodo = fileAndChunk.codeChunks
+            .filter(chunk => doChangedLinesHaveTodoComments(chunk.changedLines, language))
+            .map(chunk => chunk.codeChunk); // only need the code chunk not lines
+        if (chunksWithTodo.length <= 0) {
+            console.log(`${fileAndChunk.fileName} had no new TODO comments`)
+            return;
+        }
+        let obj = {
+            fileName: fileAndChunk.fileName,
+            codeBlocks: codeBlocksWithTodo,
+            pullRequestUrl: pullRequestUrl,
+        };
+        returnInfo.push(obj);
     })
+
+    console.log('--------------------------------');
+    console.log(returnInfo);
+    console.log('--------------------------------');
+    return returnInfo;
 }
 
-function logContext() {
-    const context = github.context;
-    console.log(context);
-}
-
-
-module.exports = { getPullRequestInfo };
+module.exports = { getFilesWithTodoComments };
