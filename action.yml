@@ -4,6 +4,12 @@ inputs:
   github-token:  # should be secrets.GITHUB_TOKEN
     description: 'should be secrets.GITHUB_TOKEN'
     required: true
+  asana-pat:  # Personal Access Token for Asana
+    description: 'Personal Access Token for Asana'
+    required: true
+  asana-projects:  # String Array of Asana Project GIDs to add the new task
+    description: 'String Array of Asana Project GIDs to add the new task'
+    required: true
 outputs:
   todo-comments: # todo comment info
     description: 'info on any todo comments found'
