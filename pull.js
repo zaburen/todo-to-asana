@@ -67,7 +67,6 @@ async function getPullRequestInfo(ownerName, repoName, pullRequestNumber) {
 
     let userSetLanguage = core.getInput('code-language');
     let githubDeterminedLanguage = pullRequest.head.repo.language;
-    console.log(`userSetLanguage ${userSetLanguage} isNull ${userSetLanguage === null} length ${userSetLanguage.length}`)
     let language = (userSetLanguage !== null && userSetLanguage.length >0 )? userSetLanguage : githubDeterminedLanguage;
     let pullRequestUrl = pullRequest.html_url;
 
