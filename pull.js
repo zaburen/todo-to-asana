@@ -65,7 +65,10 @@ async function getPullRequestInfo(ownerName, repoName, pullRequestNumber) {
 
     log(`pullRequest data: \n${pullRequest}`);
 
-    let language = pullRequest.head.repo.language;
+    let userSetLanguage = core.getInput('code-language');
+    let githubDeterminedLanguage = pullRequest.head.repo.language;
+    console.log(`userSetLanguage ${userSetLanguage} isNull ${userSetLanguage === null}`)
+    let language = userSetLanguage !== null ? userSetLanguage : githubDeterminedLanguage;
     let pullRequestUrl = pullRequest.html_url;
 
     const { data: diff } = await octokit.rest.pulls.get({

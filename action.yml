@@ -10,6 +10,9 @@ inputs:
   asana-projects:  # String Array of Asana Project GIDs to add the new task
     description: 'String: Array of Asana Project IDs to add the new task. Add comman without space after each ID'
     required: true
+  code-language:  # Code Language
+    description: 'Coding language: Used to determine regex for looking for TODO comments. If not provided will get from Github Context. Can be default aslo.'
+    required: false
 runs:
   using: 'node20'
   main: 'index.js'
