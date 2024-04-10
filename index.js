@@ -27,7 +27,7 @@ async function makeAsanaTasks(pullRequestInfoArray) {
         let index = 1;
         for await (const codeBlock of pullRequestInfo.codeBlocks) {
             let taskName = `${fileName}: ${index} (${new Date().toLocaleDateString()})`;
-            let taskNote = `${pullRequestUrl}\n\n\`\`\`\n${codeBlock}\n\`\`\``;
+            let taskNote = `<body><a href="${pullRequestUrl}">Pull Request</a>\n\n<blockquote>${codeBlock}</blockquote>\n</body>`;
             let taskUrl = await createTask(taskName, taskNote);
             newTaskUrls.push(taskUrl);
             index = index++;

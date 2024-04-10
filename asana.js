@@ -27,7 +27,7 @@ async function createTask(name, notes) {
     let body = {
         "data": {
             "name": name,
-            "notes": notes,
+            "html_notes": notes,
             "projects": asanaProjectsArray, // needs to be string array
             "completed": false,
         },
