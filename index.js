@@ -18,6 +18,13 @@ async function run() {
     }
 }
 
+/**
+ * 
+ * https://developers.asana.com/docs/rich-text
+ * 
+ * @param {Object} pullRequestInfoArray 
+ * @returns 
+ */
 async function makeAsanaTasks(pullRequestInfoArray) {
     let newTaskUrls = [];
 
@@ -27,7 +34,9 @@ async function makeAsanaTasks(pullRequestInfoArray) {
         let index = 1;
         for await (const codeBlock of pullRequestInfo.codeBlocks) {
             let taskName = `${fileName}: ${index} (${new Date().toLocaleDateString()})`;
-            let taskNote = `<body><a href="${pullRequestUrl}">Pull Request</a>\n\n<blockquote>${codeBlock}</blockquote>\n</body>`;
+            let pullRequestNote = `<a href="${pullRequestUrl}">Pull Request</a>`;
+            let codeBlockNote = `<code>${codeBlock}</code>`;
+            let taskNote = `<body>${pullRequestNote}\n\n${codeBlockNote}\n</body>`;
             let taskUrl = await createTask(taskName, taskNote);
             newTaskUrls.push(taskUrl);
             index = index++;
