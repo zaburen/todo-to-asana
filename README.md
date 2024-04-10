@@ -1,4 +1,4 @@
-# Todo-To-me
+# Todo-To-Asana
 Get any new TODO/FIXME comments then send them to Asana as a new ticket.
 
 ## Variables
