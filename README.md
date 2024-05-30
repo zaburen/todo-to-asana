@@ -22,7 +22,7 @@ Get any new TODO/FIXME comments then send them to Asana as a new ticket.
 ## Triggers
  - Requires pull request information so set `on:` to be `pull_request` and `types:` can be something like `[opened]` or `[ready_for_review]` or `[closed]`.
  - If on is not set to pull_request and error will be thrown.
- - Having different types might cause the same the same tasks to be generated multiple times.
+ - Having different types might cause the same tasks to be generated multiple times.
  - To run when a pull request is successfully merged set the types to `[closed]` an add the following line `if: github.event.pull_request.merged == true`
 
 ## Sample Yaml files
